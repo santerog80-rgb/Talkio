@@ -5,8 +5,8 @@
 'use strict';
 
 const TALKIO_CONFIG = {
-  supabaseUrl: 'https://SEU_PROJETO.supabase.co',
-  supabaseKey: 'SUA_CHAVE_ANON_PUBLICA',
+  supabaseUrl: 'https://vagjwfceaefsmemgcdma.supabase.co',
+  supabaseKey: 'sb_publishable_4_BgMG0lfghbLC-gRwo2DA_OLQ2EJPz',
   version: '1.0.0',
 };
 
