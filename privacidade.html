@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talkio – Privacidade</title><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>:root{--brand:#00C9FF;--brand2:#0077FF;--accent:#FF3CAC;--bg0:#070B14;--bg1:#0C1220;--bg2:#111927;--bg3:#18243A;--t1:#EEF3FF;--t2:#8898B8;--t3:#4A5878;--border:rgba(0,201,255,0.12);--border2:rgba(0,201,255,0.28);--r-md:14px;--r-full:9999px;--trans:0.22s;--font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--bg0);color:var(--t1);min-height:100dvh;padding-bottom:80px;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(7,11,20,.9);backdrop-filter:blur(12px);height:60px;display:flex;align-items:center;padding:0 16px;gap:12px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--t1)}.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:flex;align-items:center;justify-content:center}.logo-name{font-family:var(--font-d);font-weight:800;font-size:1rem}.logo-name span{color:var(--brand)}
+.page-title{font-family:var(--font-d);font-weight:700;font-size:1rem;flex:1}
+.container{max-width:640px;margin:0 auto;padding:20px 16px}
+.section{background:var(--bg1);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:14px}
+.section-title{font-family:var(--font-d);font-weight:700;font-size:.8rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}.setting-row:last-child{border-bottom:none;padding-bottom:0}.setting-row:first-child{padding-top:0}
+.setting-info{flex:1;min-width:0}.setting-label{font-size:.88rem;font-weight:600;margin-bottom:2px}.setting-desc{font-size:.75rem;color:var(--t2)}
+.toggle{width:44px;height:24px;background:var(--bg3);border-radius:12px;border:none;cursor:pointer;position:relative;transition:var(--trans);flex-shrink:0}.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:var(--trans)}.toggle.on{background:var(--brand)}.toggle.on::after{left:23px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:var(--r-full);font-family:var(--font-d);font-weight:600;font-size:.82rem;cursor:pointer;border:none;transition:var(--trans)}
+.btn-primary{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 2px 12px rgba(0,201,255,.3)}.btn-primary:hover{box-shadow:0 4px 20px rgba(0,201,255,.45);transform:translateY(-1px)}.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-ghost{background:var(--bg2);color:var(--t1);border:1px solid var(--border2)}.btn-ghost:hover{background:var(--bg3)}
+.btn-sm{padding:7px 14px;font-size:.78rem}.btn-full{width:100%}
+.form-input{width:100%;background:var(--bg0);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;color:var(--t1);font-size:.9rem;font-family:var(--font-b);outline:none;transition:var(--trans)}.form-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,201,255,.1)}
+.form-group{margin-bottom:14px}.form-label{display:block;font-size:.76rem;font-weight:600;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.toaster{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-full);padding:8px 18px;font-size:.82rem;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:tin .3s ease,tout .3s ease 2.7s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes tout{from{opacity:1}to{opacity:0}}
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--bg1);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:200}
+.mnb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;cursor:pointer;color:var(--t3);font-size:.62rem;font-family:var(--font-d);font-weight:600;letter-spacing:.04em;transition:var(--trans);background:none;border:none;text-transform:uppercase}.mnb svg{width:22px;height:22px}.mnb.active{color:var(--brand)}select.form-select{background:var(--bg0);border:1px solid var(--border2);border-radius:10px;padding:8px 12px;color:var(--t1);font-family:var(--font-b);font-size:.85rem;outline:none;cursor:pointer}</style></head><body>
+<div class="topbar">
+  <a class="logo" href="configuracoes.html"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" width="16" height="16"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><circle cx="9" cy="10" r="1" fill="#fff"/><circle cx="12" cy="10" r="1" fill="#fff"/><circle cx="15" cy="10" r="1" fill="#fff"/></svg></div><span class="logo-name">Talk<span>io</span></span></a>
+  <span class="page-title">Privacidade</span>
+</div>
+<div class="container">
+  <div class="section"><div class="section-title">Quem pode ver</div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Foto de perfil</div></div><select class="form-select" onchange="savePref('photo',this.value)"><option>Todos</option><option>Contatos</option><option>Ninguém</option></select></div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Status online</div></div><select class="form-select" onchange="savePref('status',this.value)"><option>Todos</option><option>Contatos</option><option>Ninguém</option></select></div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Última vez visto</div></div><select class="form-select" onchange="savePref('lastSeen',this.value)"><option>Todos</option><option>Contatos</option><option>Ninguém</option></select></div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Bio</div></div><select class="form-select" onchange="savePref('bio',this.value)"><option>Todos</option><option>Contatos</option><option>Ninguém</option></select></div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Telefone</div></div><select class="form-select" onchange="savePref('phone',this.value)"><option>Ninguém</option><option>Contatos</option></select></div>
+  </div>
+  <div class="section"><div class="section-title">Grupos</div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Quem pode me adicionar em grupos</div></div><select class="form-select" onchange="savePref('addGroup',this.value)"><option>Todos</option><option>Contatos</option><option>Ninguém</option></select></div>
+  </div>
+  <div class="section"><div class="section-title">Confirmação de leitura</div>
+    <div class="setting-row"><div class="setting-info"><div class="setting-label">Tiques azuis</div><div class="setting-desc">Mostrar quando você leu mensagens</div></div><button class="toggle on" onclick="this.classList.toggle('on');savePref('readReceipts',this.classList.contains('on'))"></button></div>
+  </div>
+  <div class="section"><div class="section-title">Contatos bloqueados</div>
+    <div id="blockedList"><p style="color:var(--t2);font-size:.85rem;">Nenhum usuário bloqueado</p></div>
+  </div>
+  <div class="section" style="font-size:.82rem;color:var(--t2);line-height:1.7;"><div class="section-title">Política de Privacidade</div>
+    <p>O Talkio protege seus dados com criptografia de ponta a ponta. Não vendemos suas informações pessoais a terceiros. Seus dados são armazenados com segurança no Supabase com RLS.</p>
+  </div>
+</div>
+<div class="toaster" id="toaster"></div>
+<nav class="mobile-nav">
+<button class="mnb" onclick="location.href='chat.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Chat</button>
+<button class="mnb" onclick="location.href='grupo.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Grupos</button>
+<button class="mnb" onclick="location.href='chamada.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Ligações</button>
+<button class="mnb" onclick="location.href='status.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Status</button>
+<button class="mnb" onclick="location.href='perfil.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://SEU_PROJETO.supabase.co';const SUPABASE_KEY='SUA_CHAVE_ANON_PUBLICA';const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toaster').appendChild(t);setTimeout(()=>t.remove(),3000);}
+let uid=null;
+async function init(){const{data:{session}}=await sb.auth.getSession();if(!session){location.href='index.html';return;}uid=session.user.id;loadBlocked();}
+async function loadBlocked(){const{data}=await sb.from('contacts').select('*,profiles:contact_id(full_name)').eq('user_id',uid).eq('is_blocked',true);if(data&&data.length){document.getElementById('blockedList').innerHTML=data.map(c=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:.85rem;"><span>'+(c.profiles&&c.profiles.full_name||'Usuário')+'</span><button onclick="unblock(''+c.contact_id+'')" style="background:none;border:none;color:var(--brand);cursor:pointer;font-size:.8rem;">Desbloquear</button></div>').join('');}}
+async function unblock(id){await sb.from('contacts').update({is_blocked:false}).eq('user_id',uid).eq('contact_id',id);loadBlocked();showToast('Usuário desbloqueado');}
+function savePref(key,val){const p=JSON.parse(localStorage.getItem('talkio_privacy')||'{}');p[key]=val;localStorage.setItem('talkio_privacy',JSON.stringify(p));showToast('Preferência salva');}
+init();
+</script></body></html>
