@@ -74,7 +74,7 @@ select.form-select{background:var(--bg0);border:1px solid var(--border2);border-
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL='https://SEU_PROJETO.supabase.co';const SUPABASE_KEY='SUA_CHAVE_ANON_PUBLICA';const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_URL='https://vagjwfceaefsmemgcdma.supabase.co';const SUPABASE_KEY='sb_publishable_4_BgMG0lfghbLC-gRwo2DA_OLQ2EJPz';const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toaster').appendChild(t);setTimeout(()=>t.remove(),3000);}
 async function init(){
   const{data:{session}}=await sb.auth.getSession();
