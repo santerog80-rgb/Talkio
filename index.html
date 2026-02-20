@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talkio – Entrar</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#00C9FF;--brand2:#0077FF;--accent:#FF3CAC;--bg0:#070B14;--bg1:#0C1220;--bg2:#111927;--bg3:#18243A;--t1:#EEF3FF;--t2:#8898B8;--t3:#4A5878;--border:rgba(0,201,255,0.12);--border2:rgba(0,201,255,0.28);--r-md:14px;--r-lg:20px;--r-xl:28px;--r-full:9999px;--shadow:0 8px 40px rgba(0,0,0,0.6);--trans:0.22s cubic-bezier(0.4,0,0.2,1);--font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--bg0);color:var(--t1);min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;-webkit-font-smoothing:antialiased}
+.bg-mesh{position:fixed;inset:0;z-index:0;overflow:hidden}
+.bg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.18}
+.blob1{width:500px;height:500px;background:var(--brand2);top:-150px;left:-100px;animation:float1 12s ease-in-out infinite}
+.blob2{width:400px;height:400px;background:var(--accent);bottom:-100px;right:-100px;animation:float2 10s ease-in-out infinite}
+.blob3{width:300px;height:300px;background:var(--brand);top:40%;left:40%;animation:float3 14s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,30px) scale(1.1)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,-50px) scale(1.1)}}
+@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,201,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,201,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.auth-card{position:relative;z-index:10;background:rgba(12,18,32,.88);backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:var(--r-xl);padding:40px 36px;width:100%;max-width:420px;margin:20px;box-shadow:var(--shadow);animation:cardIn .6s cubic-bezier(.4,0,.2,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.logo-section{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:32px;text-align:center}
+.logo-icon{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--brand2),var(--brand));display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(0,201,255,.35),0 0 80px rgba(0,201,255,.15);animation:logoPulse 3s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{box-shadow:0 0 30px rgba(0,201,255,.3)}50%{box-shadow:0 0 60px rgba(0,201,255,.5)}}
+.logo-name{font-family:var(--font-d);font-weight:800;font-size:1.8rem;letter-spacing:-.03em}
+.logo-name span{color:var(--brand)}
+.logo-tagline{color:var(--t2);font-size:.85rem}
+.steps{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);transition:var(--trans)}
+.step-dot.active{background:var(--brand);width:24px;border-radius:4px}
+.step-dot.done{background:var(--brand);opacity:.5}
+.step-line{width:30px;height:1px;background:var(--border2)}
+.form-title{font-family:var(--font-d);font-weight:700;font-size:1.2rem;margin-bottom:6px;text-align:center}
+.form-subtitle{color:var(--t2);font-size:.83rem;text-align:center;margin-bottom:24px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.78rem;font-weight:600;color:var(--t2);margin-bottom:6px;font-family:var(--font-d);letter-spacing:.04em;text-transform:uppercase}
+.form-input{width:100%;background:var(--bg0);border:1px solid var(--border2);border-radius:var(--r-md);padding:12px 16px;color:var(--t1);font-size:.9rem;font-family:var(--font-b);outline:none;transition:var(--trans)}
+.form-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,201,255,.12)}
+.form-input::placeholder{color:var(--t3)}
+.code-row{display:flex;gap:8px;justify-content:center;margin:8px 0 20px}
+.code-digit{width:48px;height:60px;background:var(--bg0);border:1.5px solid var(--border2);border-radius:var(--r-md);font-size:1.5rem;font-weight:700;font-family:var(--font-d);text-align:center;color:var(--t1);outline:none;caret-color:var(--brand);transition:var(--trans)}
+.code-digit:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,201,255,.15)}
+.code-digit.filled{border-color:var(--brand);color:var(--brand)}
+.code-timer{text-align:center;color:var(--t3);font-size:.8rem;margin-bottom:16px}
+.code-timer span{color:var(--brand);font-weight:600}
+.resend-btn{background:none;border:none;cursor:pointer;color:var(--brand);font-size:.82rem;font-family:var(--font-b);text-decoration:underline;display:none}
+.resend-btn.visible{display:inline}
+.btn{width:100%;padding:14px;border-radius:var(--r-full);font-family:var(--font-d);font-weight:700;font-size:.95rem;cursor:pointer;border:none;transition:var(--trans);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 4px 20px rgba(0,201,255,.3)}
+.btn-primary:hover:not(:disabled){box-shadow:0 6px 28px rgba(0,201,255,.45);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:var(--bg3);color:var(--t1);border:1px solid var(--border2);margin-top:10px}
+.btn-ghost:hover{background:var(--bg2)}
+.divider{display:flex;align-items:center;gap:12px;color:var(--t3);font-size:.75rem;margin:20px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.switch-link{text-align:center;font-size:.83rem;color:var(--t2);margin-top:20px}
+.switch-link a{color:var(--brand);cursor:pointer;font-weight:600}
+.avatar-upload{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
+.av-preview{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--brand2),var(--brand));display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;border:2px solid var(--border2);transition:var(--trans);font-family:var(--font-d);font-weight:700;font-size:1.4rem;color:#000}
+.av-preview:hover{border-color:var(--brand)}
+.alert{padding:10px 14px;border-radius:var(--r-md);font-size:.82rem;margin-bottom:16px;display:none;align-items:center;gap:8px;animation:fadeIn .2s ease}
+.alert.show{display:flex}
+.alert-error{background:rgba(255,61,0,.12);border:1px solid rgba(255,61,0,.25);color:#ff6b6b}
+.alert-success{background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.25);color:#00e676}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pwd-strength{margin-top:6px;display:flex;gap:4px;align-items:center}
+.pwd-bar{flex:1;height:3px;border-radius:2px;background:var(--bg3);transition:var(--trans)}
+.pwd-label{font-size:.7rem;color:var(--t3);flex-shrink:0}
+.terms-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
+.terms-check input{margin-top:2px;accent-color:var(--brand);cursor:pointer}
+.terms-check label{font-size:.8rem;color:var(--t2);cursor:pointer;line-height:1.5}
+.terms-check label a{color:var(--brand)}
+@media(max-width:480px){.auth-card{padding:28px 20px;margin:12px}.code-digit{width:42px;height:54px;font-size:1.3rem}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes bounce{0%{transform:scale(.3)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+<div class="bg-mesh"><div class="bg-blob blob1"></div><div class="bg-blob blob2"></div><div class="bg-blob blob3"></div></div>
+<div class="bg-grid"></div>
+
+<div class="auth-card" id="authCard">
+  <div class="logo-section">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="36" height="36">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        <circle cx="9" cy="10" r="1" fill="#fff"/><circle cx="12" cy="10" r="1" fill="#fff"/><circle cx="15" cy="10" r="1" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="logo-name">Talk<span>io</span></div>
+    <div class="logo-tagline">Conecte-se com quem importa</div>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="step-dot active" id="step1"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="step2"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="step3"></div>
+  </div>
+
+  <div class="alert alert-error" id="alertError"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="alertErrorText"></span></div>
+  <div class="alert alert-success" id="alertSuccess"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg><span id="alertSuccessText"></span></div>
+
+  <!-- PANEL 1: Login/Register -->
+  <div id="panelLogin">
+    <div class="form-title" id="loginTitle">Entrar no Talkio</div>
+    <div class="form-subtitle" id="loginSubtitle">Use seu e-mail e senha para continuar</div>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" id="emailInput" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input class="form-input" type="password" id="pwdInput" placeholder="••••••••" autocomplete="current-password" oninput="checkPwd(this.value)" onkeydown="if(event.key==='Enter')handleLogin()">
+      <div class="pwd-strength" id="pwdStrength" style="display:none;">
+        <div class="pwd-bar" id="bar1"></div><div class="pwd-bar" id="bar2"></div><div class="pwd-bar" id="bar3"></div>
+        <span class="pwd-label" id="pwdLabel"></span>
+      </div>
+    </div>
+    <div class="form-group" id="nameGroup" style="display:none;">
+      <label class="form-label">Nome completo</label>
+      <input class="form-input" type="text" id="nameInput" placeholder="Seu nome" autocomplete="name">
+    </div>
+    <div class="avatar-upload" id="avatarGroup" style="display:none;">
+      <div class="av-preview" id="avPreview" onclick="document.getElementById('avFile').click()">?</div>
+      <input type="file" id="avFile" accept="image/*" style="display:none" onchange="previewAv(event)">
+      <span style="font-size:.78rem;color:var(--t2);">Toque para adicionar foto</span>
+    </div>
+    <div class="terms-check" id="termsGroup" style="display:none;">
+      <input type="checkbox" id="termsCheck">
+      <label for="termsCheck">Concordo com os <a href="privacidade.html" target="_blank">Termos de Uso</a> e <a href="privacidade.html" target="_blank">Política de Privacidade</a></label>
+    </div>
+    <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">
+      <span id="loginBtnText">Entrar</span><div class="spinner" id="loginSpinner"></div>
+    </button>
+    <div id="forgotWrap" style="text-align:center;margin-top:14px;">
+      <button onclick="showForgot()" style="background:none;border:none;cursor:pointer;color:var(--t2);font-size:.8rem;font-family:var(--font-b);">Esqueceu a senha?</button>
+    </div>
+    <div class="divider">ou</div>
+    <div class="switch-link" id="switchWrap">Não tem conta? <a onclick="toRegister()">Criar conta</a></div>
+    <div class="switch-link" id="switchLoginWrap" style="display:none;">Já tem conta? <a onclick="toLogin()">Entrar</a></div>
+  </div>
+
+  <!-- PANEL 2: Code -->
+  <div id="panelCode" style="display:none;">
+    <div class="form-title">Confirme seu e-mail</div>
+    <div class="form-subtitle">Enviamos um código de 6 dígitos para<br><strong id="codeEmail" style="color:var(--brand);"></strong></div>
+    <div class="code-row">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d0" oninput="onDig(this,0)" onkeydown="onKey(this,0,event)">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d1" oninput="onDig(this,1)" onkeydown="onKey(this,1,event)">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d2" oninput="onDig(this,2)" onkeydown="onKey(this,2,event)">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d3" oninput="onDig(this,3)" onkeydown="onKey(this,3,event)">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d4" oninput="onDig(this,4)" onkeydown="onKey(this,4,event)">
+      <input class="code-digit" type="text" inputmode="numeric" maxlength="1" id="d5" oninput="onDig(this,5)" onkeydown="onKey(this,5,event)">
+    </div>
+    <div class="code-timer">Reenviar em <span id="timerTxt">60s</span><button class="resend-btn" id="resendBtn" onclick="resend()">Reenviar código</button></div>
+    <button class="btn btn-primary" id="verifyBtn" onclick="verifyCode()">
+      <span id="verifyTxt">Verificar</span><div class="spinner" id="verifySpinner"></div>
+    </button>
+    <button class="btn btn-ghost" onclick="toLogin()">Voltar</button>
+  </div>
+
+  <!-- PANEL 3: Success -->
+  <div id="panelSuccess" style="display:none;text-align:center;">
+    <div style="font-size:4rem;margin-bottom:16px;animation:bounce .6s ease;">🎉</div>
+    <div class="form-title">Conta criada!</div>
+    <div class="form-subtitle" style="margin-bottom:24px;">Bem-vindo ao Talkio! Sua conta foi verificada com sucesso.</div>
+    <button class="btn btn-primary" onclick="window.location.href='chat.html'">Ir para o Chat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+  </div>
+
+  <!-- PANEL FORGOT -->
+  <div id="panelForgot" style="display:none;">
+    <div class="form-title">Recuperar senha</div>
+    <div class="form-subtitle">Enviaremos um link para redefinir sua senha</div>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" id="forgotEmail" placeholder="seu@email.com">
+    </div>
+    <button class="btn btn-primary" onclick="sendReset()">Enviar link</button>
+    <button class="btn btn-ghost" onclick="toLogin()">Voltar</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://SEU_PROJETO.supabase.co';
+const SUPABASE_KEY='SUA_CHAVE_ANON_PUBLICA';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let isReg=false,pendingEmail='',pendingName='',pendingAv=null,timer=null;
+
+(async()=>{const{data:{session}}=await sb.auth.getSession();if(session)location.href='chat.html';})();
+
+function toRegister(){isReg=true;document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSubtitle').textContent='Junte-se ao Talkio hoje mesmo';document.getElementById('loginBtnText').textContent='Criar conta';['nameGroup','avatarGroup','termsGroup'].forEach(id=>document.getElementById(id).style.display='');document.getElementById('switchWrap').style.display='none';document.getElementById('switchLoginWrap').style.display='';document.getElementById('forgotWrap').style.display='none';document.getElementById('pwdStrength').style.display='';clearAlerts();}
+function toLogin(){isReg=false;document.getElementById('loginTitle').textContent='Entrar no Talkio';document.getElementById('loginSubtitle').textContent='Use seu e-mail e senha para continuar';document.getElementById('loginBtnText').textContent='Entrar';['nameGroup','avatarGroup','termsGroup'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('switchWrap').style.display='';document.getElementById('switchLoginWrap').style.display='none';document.getElementById('forgotWrap').style.display='';document.getElementById('pwdStrength').style.display='none';document.getElementById('panelLogin').style.display='';document.getElementById('panelCode').style.display='none';document.getElementById('panelForgot').style.display='none';updateSteps(1);clearAlerts();}
+function showForgot(){document.getElementById('panelLogin').style.display='none';document.getElementById('panelForgot').style.display='';clearAlerts();}
+
+async function handleLogin(){
+  const email=document.getElementById('emailInput').value.trim();
+  const password=document.getElementById('pwdInput').value;
+  if(!email||!password){showErr('Preencha todos os campos.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('E-mail inválido.');return;}
+  if(isReg){
+    const name=document.getElementById('nameInput').value.trim();
+    if(!name){showErr('Informe seu nome.');return;}
+    if(password.length<8){showErr('Senha deve ter ao menos 8 caracteres.');return;}
+    if(!document.getElementById('termsCheck').checked){showErr('Aceite os termos para continuar.');return;}
+    await doRegister(email,password,name);
+  }else{await doLogin(email,password);}
+}
+
+async function doLogin(email,password){
+  setLoad(true,'loginBtn','loginBtnText','loginSpinner');
+  const{error}=await sb.auth.signInWithPassword({email,password});
+  setLoad(false,'loginBtn','loginBtnText','loginSpinner','Entrar');
+  if(error){showErr(trErr(error.message));return;}
+  location.href='chat.html';
+}
+
+async function doRegister(email,password,name){
+  setLoad(true,'loginBtn','loginBtnText','loginSpinner');
+  pendingEmail=email;pendingName=name;
+  const{error}=await sb.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:location.origin+'/chat.html'}});
+  setLoad(false,'loginBtn','loginBtnText','loginSpinner','Criar conta');
+  if(error){showErr(trErr(error.message));return;}
+  document.getElementById('panelLogin').style.display='none';
+  document.getElementById('panelCode').style.display='';
+  document.getElementById('codeEmail').textContent=email;
+  updateSteps(2);startTimer();
+  setTimeout(()=>document.getElementById('d0').focus(),100);
+}
+
+function onDig(el,i){
+  el.value=el.value.replace(/\D/g,'');
+  el.classList.toggle('filled',el.value.length>0);
+  if(el.value&&i<5)document.getElementById('d'+(i+1)).focus();
+  if([0,1,2,3,4,5].every(j=>document.getElementById('d'+j).value))setTimeout(verifyCode,200);
+}
+function onKey(el,i,e){
+  if(e.key==='Backspace'&&!el.value&&i>0)document.getElementById('d'+(i-1)).focus();
+  if(e.key==='v'&&(e.ctrlKey||e.metaKey)){navigator.clipboard.readText().then(t=>{const d=t.replace(/\D/g,'').slice(0,6);if(d.length===6){[0,1,2,3,4,5].forEach(j=>{const el=document.getElementById('d'+j);el.value=d[j];el.classList.add('filled');});setTimeout(verifyCode,200);}}).catch(()=>{});}
+}
+
+async function verifyCode(){
+  const code=[0,1,2,3,4,5].map(i=>document.getElementById('d'+i).value).join('');
+  if(code.length<6){showErr('Digite todos os 6 dígitos.');return;}
+  setLoad(true,'verifyBtn','verifyTxt','verifySpinner');
+  const{data,error}=await sb.auth.verifyOtp({email:pendingEmail,token:code,type:'signup'});
+  setLoad(false,'verifyBtn','verifyTxt','verifySpinner','Verificar');
+  if(error){showErr('Código inválido ou expirado.');shake();return;}
+  if(pendingAv&&data.user){
+    const ext=pendingAv.name.split('.').pop();
+    const path=`avatars/${data.user.id}.${ext}`;
+    await sb.storage.from('avatars').upload(path,pendingAv,{upsert:true});
+    const{data:{publicUrl}}=sb.storage.from('avatars').getPublicUrl(path);
+    await sb.from('profiles').update({avatar_url:publicUrl}).eq('id',data.user.id);
+  }
+  clearInterval(timer);updateSteps(3);
+  document.getElementById('panelCode').style.display='none';
+  document.getElementById('panelSuccess').style.display='';
+}
+
+async function resend(){
+  const{error}=await sb.auth.resend({email:pendingEmail,type:'signup'});
+  if(!error){showOk('Código reenviado!');startTimer();}else showErr('Erro ao reenviar.');
+}
+
+function startTimer(){
+  clearInterval(timer);let s=60;
+  document.getElementById('timerTxt').style.display='inline';
+  document.getElementById('resendBtn').classList.remove('visible');
+  timer=setInterval(()=>{s--;document.getElementById('timerTxt').textContent=s+'s';if(s<=0){clearInterval(timer);document.getElementById('timerTxt').style.display='none';document.getElementById('resendBtn').classList.add('visible');}},1000);
+}
+
+async function sendReset(){
+  const email=document.getElementById('forgotEmail').value.trim();
+  if(!email){showErr('Digite seu e-mail.');return;}
+  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/reset.html'});
+  if(error){showErr(trErr(error.message));return;}
+  showOk('Link enviado! Verifique seu e-mail.');setTimeout(toLogin,2500);
+}
+
+function previewAv(e){
+  const f=e.target.files[0];if(!f)return;pendingAv=f;
+  const r=new FileReader();r.onload=ev=>{const p=document.getElementById('avPreview');p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;}; r.readAsDataURL(f);
+}
+
+function checkPwd(pwd){
+  const bars=[document.getElementById('bar1'),document.getElementById('bar2'),document.getElementById('bar3')];
+  const label=document.getElementById('pwdLabel');
+  bars.forEach(b=>b.className='pwd-bar');
+  if(!pwd){label.textContent='';return;}
+  let sc=0;if(pwd.length>=8)sc++;if(/[A-Z]/.test(pwd)&&/[a-z]/.test(pwd))sc++;if(/[0-9]/.test(pwd)&&/[^A-Za-z0-9]/.test(pwd))sc++;
+  const cls=['weak','medium','strong'],labels=['Fraca','Média','Forte'];
+  bars.slice(0,sc).forEach(b=>b.classList.add(cls[sc-1]));label.textContent=labels[sc-1]||'';
+  label.style.color=sc===1?'#ff3d00':sc===2?'#FFB300':'#00E676';
+}
+
+function shake(){
+  const row=document.querySelector('.code-row');row.style.animation='shake .4s ease';
+  setTimeout(()=>row.style.animation='',400);
+  [0,1,2,3,4,5].forEach(i=>{const d=document.getElementById('d'+i);d.value='';d.classList.remove('filled');});
+  document.getElementById('d0').focus();
+}
+
+function updateSteps(a){[1,2,3].forEach(i=>{const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i<a)el.classList.add('done');else if(i===a)el.classList.add('active');});}
+function showErr(m){const el=document.getElementById('alertError');document.getElementById('alertErrorText').textContent=m;el.classList.add('show');document.getElementById('alertSuccess').classList.remove('show');setTimeout(()=>el.classList.remove('show'),5000);}
+function showOk(m){const el=document.getElementById('alertSuccess');document.getElementById('alertSuccessText').textContent=m;el.classList.add('show');document.getElementById('alertError').classList.remove('show');setTimeout(()=>el.classList.remove('show'),4000);}
+function clearAlerts(){document.getElementById('alertError').classList.remove('show');document.getElementById('alertSuccess').classList.remove('show');}
+function setLoad(l,btn,txt,sp,def=''){document.getElementById(btn).disabled=l;document.getElementById(txt).style.display=l?'none':'';document.getElementById(sp).style.display=l?'block':'none';}
+function trErr(m){if(m.includes('Invalid login'))return 'E-mail ou senha incorretos.';if(m.includes('Email not confirmed'))return 'E-mail não confirmado.';if(m.includes('already registered'))return 'Este e-mail já está cadastrado.';if(m.includes('rate limit'))return 'Muitas tentativas. Aguarde.';return 'Ocorreu um erro. Tente novamente.';}
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talkio – Chamadas</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#00C9FF;--brand2:#0077FF;--accent:#FF3CAC;--bg0:#070B14;--bg1:#0C1220;--bg2:#111927;--bg3:#18243A;--t1:#EEF3FF;--t2:#8898B8;--t3:#4A5878;--border:rgba(0,201,255,0.12);--border2:rgba(0,201,255,0.28);--online:#00E676;--busy:#FF3D00;--font-d:'Syne',sans-serif;--font-b:'DM Sans',sans-serif;--trans:0.22s cubic-bezier(0.4,0,0.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--bg0);color:var(--t1);height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.app{display:flex;height:100dvh}
+.sidebar{width:310px;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100dvh;flex-shrink:0}
+.logo-bar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--t1)}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 0 20px rgba(0,201,255,.2);display:flex;align-items:center;justify-content:center}
+.logo-name{font-family:var(--font-d);font-weight:800;font-size:1.2rem}
+.logo-name span{color:var(--brand)}
+.icon-btn{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:var(--trans);cursor:pointer;background:none;border:none}
+.icon-btn:hover{background:var(--bg2);color:var(--t1)}
+.icon-btn svg{width:18px;height:18px}
+.tab-row{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{padding:5px 14px;border-radius:9999px;font-size:.75rem;font-weight:600;font-family:var(--font-d);color:var(--t3);cursor:pointer;transition:var(--trans);background:none;border:none;text-transform:uppercase;letter-spacing:.04em}
+.tab-btn:hover{color:var(--t1);background:var(--bg2)}
+.tab-btn.active{color:var(--brand);background:rgba(0,201,255,.1)}
+.call-list{flex:1;overflow-y:auto;padding:6px 8px}
+.sect-title{font-size:.7rem;font-family:var(--font-d);font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:10px 10px 4px}
+.call-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer;transition:var(--trans)}
+.call-item:hover{background:rgba(0,201,255,.05)}
+.av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:700;font-size:.85rem;color:#000;flex-shrink:0}
+.call-info{flex:1;min-width:0}
+.call-name{font-weight:600;font-size:.88rem}
+.call-detail{display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--t2);margin-top:3px}
+.call-detail svg{width:12px;height:12px}
+.incoming{color:var(--online)}.outgoing{color:var(--t3)}.missed{color:var(--busy)}
+.call-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.call-time-str{font-size:.7rem;color:var(--t3)}
+.recall-btn{width:32px;height:32px;border-radius:50%;background:rgba(0,201,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:var(--brand);transition:var(--trans)}
+.recall-btn:hover{background:rgba(0,201,255,.25)}
+.main-content{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:var(--bg0)}
+.empty-calls{text-align:center;color:var(--t2)}
+.empty-calls svg{opacity:.3;margin:0 auto 16px}
+.empty-calls h3{font-family:var(--font-d);font-size:1.2rem;color:var(--t1);margin-bottom:8px}
+.empty-calls p{font-size:.85rem;max-width:220px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:9999px;font-family:var(--font-d);font-weight:600;font-size:.875rem;cursor:pointer;border:none;transition:var(--trans);text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 2px 12px rgba(0,201,255,.3)}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,201,255,.45);transform:translateY(-1px)}
+.btn-sm{padding:7px 16px;font-size:.78rem}
+
+/* === CALL OVERLAY === */
+.call-overlay{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;background:#000}
+.call-overlay.active{display:flex}
+.video-area{flex:1;position:relative;background:#0a0a14}
+video#mainVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+video#selfVideo{position:absolute;bottom:100px;right:16px;width:90px;height:130px;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,.2);z-index:10;cursor:pointer}
+.call-bg-avatar{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:1}
+.call-av-big{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:2.2rem;color:#000;box-shadow:0 0 60px rgba(0,201,255,.4)}
+.call-bg-name{font-family:var(--font-d);font-weight:700;font-size:1.5rem;color:#fff}
+.call-bg-status{color:rgba(255,255,255,.6);font-size:.9rem}
+.call-status-anim{display:flex;gap:5px;margin-top:8px}
+.call-status-anim span{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:callPulse 1.4s ease-in-out infinite}
+.call-status-anim span:nth-child(2){animation-delay:.2s}.call-status-anim span:nth-child(3){animation-delay:.4s}
+@keyframes callPulse{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.call-controls{position:absolute;bottom:0;left:0;right:0;z-index:20;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:24px 20px 32px}
+.call-timer{text-align:center;font-family:var(--font-d);font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:20px}
+.ctrl-row{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.ctrl-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:none;border:none}
+.ctrl-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--trans)}
+.ctrl-circle svg{width:24px;height:24px;color:#fff}
+.ctrl-circle.mute{background:rgba(255,255,255,.15)}
+.ctrl-circle.mute:hover,.ctrl-circle.mute.on{background:rgba(255,255,255,.3)}
+.ctrl-circle.camera{background:rgba(255,255,255,.15)}
+.ctrl-circle.camera:hover,.ctrl-circle.camera.on{background:rgba(255,255,255,.3)}
+.ctrl-circle.speaker{background:rgba(255,255,255,.15)}
+.ctrl-circle.speaker:hover{background:rgba(255,255,255,.3)}
+.ctrl-circle.record-c{background:rgba(255,61,0,.25)}
+.ctrl-circle.record-c:hover,.ctrl-circle.record-c.on{background:rgba(255,61,0,.5)}
+.ctrl-circle.end{background:#FF3D00;width:68px;height:68px}
+.ctrl-circle.end:hover{background:#f00;transform:scale(1.05)}
+.ctrl-label{font-size:.65rem;color:rgba(255,255,255,.6);font-family:var(--font-d);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.incoming-call{position:fixed;inset:0;z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(7,11,20,.95);backdrop-filter:blur(10px)}
+.incoming-call.active{display:flex}
+.inc-av{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;font-size:1.8rem;color:#000;margin-bottom:16px;animation:incRing 2s ease-in-out infinite}
+@keyframes incRing{0%{box-shadow:0 0 0 0 rgba(0,201,255,.4)}70%{box-shadow:0 0 0 30px rgba(0,201,255,0)}100%{box-shadow:0 0 0 0 rgba(0,201,255,0)}}
+.inc-name{font-family:var(--font-d);font-weight:700;font-size:1.4rem;margin-bottom:8px}
+.inc-type{color:rgba(255,255,255,.5);font-size:.9rem;margin-bottom:40px}
+.inc-actions{display:flex;gap:40px}
+.inc-btn{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;background:none;border:none}
+.inc-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.inc-circle.accept{background:#00E676}
+.inc-circle.accept:hover{background:#00ff88}
+.inc-circle.decline{background:#FF3D00}
+.inc-circle.decline:hover{background:#ff5555}
+.inc-circle svg{width:26px;height:26px;color:#fff}
+.inc-label{font-size:.75rem;color:rgba(255,255,255,.6);font-family:var(--font-d);font-weight:600}
+.new-call-modal{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.new-call-modal.open{display:flex}
+.modal-box{background:#111927;border:1px solid rgba(0,201,255,.28);border-radius:28px;padding:24px;max-width:400px;width:calc(100% - 40px);box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.modal-title{font-family:var(--font-d);font-weight:700;font-size:1.1rem;margin-bottom:16px}
+.contact-list-pick{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.pick-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer;transition:var(--trans)}
+.pick-item:hover{background:rgba(0,201,255,.07)}
+.pick-name{font-size:.88rem;font-weight:500}
+.pick-status{font-size:.72rem;color:var(--t2)}
+.pick-actions{display:flex;gap:6px;margin-left:auto}
+.pick-call-btn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:var(--trans)}
+.pick-call-btn.voice{background:rgba(0,201,255,.15);color:var(--brand)}
+.pick-call-btn.voice:hover{background:rgba(0,201,255,.3)}
+.pick-call-btn.video{background:rgba(255,60,172,.15);color:var(--accent)}
+.pick-call-btn.video:hover{background:rgba(255,60,172,.3)}
+.toaster{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:99999;pointer-events:none;align-items:center}
+.toast{background:#18243A;border:1px solid rgba(0,201,255,.15);border-radius:9999px;padding:8px 18px;font-size:.82rem;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:tin .3s ease,tout .3s ease 2.7s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes tout{from{opacity:1}to{opacity:0;transform:translateY(10px)}}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--bg1);border-top:1px solid var(--border);align-items:center;justify-content:space-around;z-index:200}
+.mnb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 16px;cursor:pointer;color:var(--t3);font-size:.62rem;font-family:var(--font-d);font-weight:600;letter-spacing:.04em;transition:var(--trans);background:none;border:none;text-transform:uppercase}
+.mnb svg{width:22px;height:22px}.mnb.active{color:var(--brand)}
+.menu-btn{display:none}
+@media(max-width:768px){.sidebar{position:fixed;left:0;top:0;bottom:64px;width:100vw;transform:translateX(0)}.sidebar.hidden{transform:translateX(-100%)}.main-content{position:fixed;left:0;top:0;right:0;bottom:64px}.main-content.hidden{display:none}.mobile-nav{display:flex}.menu-btn{display:flex}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="logo-bar">
+      <a class="logo" href="chat.html">
+        <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" width="20" height="20"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><circle cx="9" cy="10" r="1" fill="#fff"/><circle cx="12" cy="10" r="1" fill="#fff"/><circle cx="15" cy="10" r="1" fill="#fff"/></svg></div>
+        <span class="logo-name">Talk<span>io</span></span>
+      </a>
+      <button class="icon-btn" onclick="openNewCallModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="setTab(this,'all')">Todas</button>
+      <button class="tab-btn" onclick="setTab(this,'missed')">Perdidas</button>
+      <button class="tab-btn" onclick="setTab(this,'voice')">Voz</button>
+      <button class="tab-btn" onclick="setTab(this,'video')">Vídeo</button>
+    </div>
+    <div class="call-list" id="callList"></div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+    <div class="empty-calls">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5" width="72" height="72" style="display:block;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      <h3>Ligações</h3>
+      <p>Histórico de chamadas aparecerá aqui</p>
+      <br>
+      <button class="btn btn-primary btn-sm" onclick="openNewCallModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 5v14M5 12h14"/></svg>
+        Nova chamada
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- Active Call Overlay -->
+<div class="call-overlay" id="callOverlay">
+  <div class="video-area">
+    <video id="mainVideo" autoplay playsinline></video>
+    <video id="selfVideo" autoplay playsinline muted></video>
+    <div class="call-bg-avatar" id="callBgAvatar">
+      <div class="call-av-big" id="callBigAv" style="background:linear-gradient(135deg,#0077FF,#00C9FF);">AN</div>
+      <div class="call-bg-name" id="callBigName">Ana Silva</div>
+      <div class="call-bg-status" id="callBigStatus">Chamando...</div>
+      <div class="call-status-anim" id="callAnim"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <div class="call-controls">
+    <div class="call-timer" id="callTimer">00:00</div>
+    <div class="ctrl-row">
+      <button class="ctrl-btn" onclick="toggleMute()">
+        <div class="ctrl-circle mute" id="muteBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <span class="ctrl-label" id="muteLabel">Mudo</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleCamera()">
+        <div class="ctrl-circle camera" id="cameraBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <span class="ctrl-label" id="cameraLabel">Câmera</span>
+      </button>
+      <button class="ctrl-btn" onclick="endCall()">
+        <div class="ctrl-circle end"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="24" height="24"><path d="M10.68 13.31a16 16 0 003.41 2.6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.42 19.42 0 01-3.33-2.67m-2.67-3.34a19.79 19.79 0 01-3.07-8.63A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91"/><line x1="23" y1="1" x2="1" y2="23"/></svg></div>
+        <span class="ctrl-label">Encerrar</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleSpeaker()">
+        <div class="ctrl-circle speaker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+        <span class="ctrl-label">Alto-fal.</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleScreenShare()">
+        <div class="ctrl-circle mute" id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <span class="ctrl-label">Tela</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Incoming Call -->
+<div class="incoming-call" id="incomingCall">
+  <div class="inc-av" id="incAv" style="background:linear-gradient(135deg,#FF3CAC,#0077FF);">AN</div>
+  <div class="inc-name" id="incName">Ana Silva</div>
+  <div class="inc-type" id="incType">Chamada de voz recebida</div>
+  <div class="inc-actions">
+    <button class="inc-btn" onclick="declineCall()">
+      <div class="inc-circle decline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="26" height="26"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+      <span class="inc-label">Recusar</span>
+    </button>
+    <button class="inc-btn" onclick="acceptCall()">
+      <div class="inc-circle accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="26" height="26"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <span class="inc-label">Aceitar</span>
+    </button>
+  </div>
+</div>
+
+<!-- New Call Modal -->
+<div class="new-call-modal" id="newCallModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <div class="modal-title">Nova chamada</div>
+    <input type="text" placeholder="Buscar contato..." oninput="filterCallContacts(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;background:#0C1220;border:1px solid rgba(0,201,255,.2);color:#EEF3FF;font-family:var(--font-b);font-size:.88rem;outline:none;margin-bottom:12px;">
+    <div class="contact-list-pick" id="callContactList"></div>
+    <button onclick="document.getElementById('newCallModal').classList.remove('open')" style="width:100%;margin-top:12px;padding:10px;border-radius:9999px;background:#18243A;border:1px solid rgba(0,201,255,.15);color:#8898B8;cursor:pointer;font-family:var(--font-d);font-weight:600;font-size:.85rem;">Cancelar</button>
+  </div>
+</div>
+
+<div class="toaster" id="toaster"></div>
+
+<nav class="mobile-nav">
+  <button class="mnb" onclick="location.href='chat.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Chat</button>
+  <button class="mnb" onclick="location.href='grupo.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Grupos</button>
+  <button class="mnb active" onclick="location.href='chamada.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Ligações</button>
+  <button class="mnb" onclick="location.href='status.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Status</button>
+  <button class="mnb" onclick="location.href='perfil.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="signaling.js"></script>
+<script>
+const SUPABASE_URL='https://SEU_PROJETO.supabase.co';
+const SUPABASE_KEY='SUA_CHAVE_ANON_PUBLICA';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,contacts=[],callLog=[],isMuted=false,isCameraOff=false,localStream=null,timerInt=null,callSecs=0,currentCallType='voice';
+const GRAD=['linear-gradient(135deg,#0077FF,#00C9FF)','linear-gradient(135deg,#FF3CAC,#784BA0)','linear-gradient(135deg,#00C9FF,#00E676)','linear-gradient(135deg,#FFB300,#FF3D00)','linear-gradient(135deg,#784BA0,#2B86C5)'];
+function grad(id){return GRAD[(id||'').split('').reduce((a,c)=>a+c.charCodeAt(0),0)%GRAD.length];}
+function initials(n=''){return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()||'??';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){location.href='index.html';return;}
+  currentUser=session.user;
+  const{data:c}=await sb.from('profiles').select('*').neq('id',currentUser.id);
+  contacts=c||[];
+  await loadCallLog();
+  checkIncomingParams();
+  subscribeSignaling();
+}
+
+async function loadCallLog(){
+  const{data}=await sb.from('call_logs').select('*,caller:caller_id(full_name,id),callee:callee_id(full_name,id)').or(`caller_id.eq.${currentUser.id},callee_id.eq.${currentUser.id}`).order('created_at',{ascending:false}).limit(50);
+  callLog=data||[];
+  renderCallLog(callLog);
+}
+
+function renderCallLog(list){
+  const el=document.getElementById('callList');
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px 16px;color:var(--t3);font-size:.82rem;">Nenhuma chamada ainda</div>';return;}
+  let html='',lastDate='';
+  list.forEach(c=>{
+    const other=c.caller_id===currentUser.id?c.callee:c.caller;
+    const isMine=c.caller_id===currentUser.id;
+    const d=new Date(c.created_at);
+    const ds=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+    if(ds!==lastDate){html+=`<div class="sect-title">${ds}</div>`;lastDate=ds;}
+    const typeIcon=c.call_type==='video'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63A19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>';
+    const statusClass=c.status==='missed'?'missed':isMine?'outgoing':'incoming';
+    const statusLabel=c.status==='missed'?'Perdida':isMine?'Efetuada':'Recebida';
+    const dur=c.duration?formatDur(c.duration):'';
+    html+=`<div class="call-item">
+      <div class="av" style="background:${grad(other?.id||'')};">${initials(other?.full_name||'')}</div>
+      <div class="call-info">
+        <div class="call-name">${esc(other?.full_name||'Desconhecido')}</div>
+        <div class="call-detail">
+          <span class="${statusClass}">${typeIcon} ${statusLabel}</span>
+          ${dur?`<span>· ${dur}</span>`:''}
+        </div>
+      </div>
+      <div class="call-meta">
+        <span class="call-time-str">${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</span>
+        <button class="recall-btn" onclick="startCall('${other?.id||''}','${other?.full_name||''}','${c.call_type}')" title="Ligar de volta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+function formatDur(s){const m=Math.floor(s/60),sec=s%60;return `${m}:${sec.toString().padStart(2,'0')}`;}
+
+function setTab(btn,mode){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  const filtered=mode==='all'?callLog:callLog.filter(c=>mode==='missed'?c.status==='missed':c.call_type===mode);
+  renderCallLog(filtered);
+}
+
+function checkIncomingParams(){
+  const p=new URLSearchParams(location.search);
+  const type=p.get('type'),contact=p.get('contact');
+  if(type&&contact)startCall(contact,'Contato',type);
+}
+
+async function startCall(contactId,name,type='voice'){
+  currentCallType=type;
+  document.getElementById('callBigName').textContent=name;
+  document.getElementById('callBigAv').textContent=initials(name);
+  document.getElementById('callBigAv').style.background=grad(contactId);
+  document.getElementById('callBigStatus').textContent='Chamando...';
+  document.getElementById('callAnim').style.display='flex';
+  try{
+    const constraints=type==='video'?{video:true,audio:true}:{audio:true};
+    localStream=await navigator.mediaDevices.getUserMedia(constraints);
+    if(type==='video'){document.getElementById('selfVideo').srcObject=localStream;document.getElementById('selfVideo').style.display='block';}
+    else{document.getElementById('selfVideo').style.display='none';}
+  }catch{showToast('Sem permissão para câmera/microfone');}
+  document.getElementById('callOverlay').classList.add('active');
+  await sb.from('call_logs').insert({caller_id:currentUser.id,callee_id:contactId,call_type:type,status:'outgoing',created_at:new Date().toISOString()});
+  startTimer();
+  document.getElementById('newCallModal').classList.remove('open');
+}
+
+function startTimer(){callSecs=0;document.getElementById('callTimer').textContent='00:00';timerInt=setInterval(()=>{callSecs++;const m=Math.floor(callSecs/60).toString().padStart(2,'0'),s=(callSecs%60).toString().padStart(2,'0');document.getElementById('callTimer').textContent=`${m}:${s}`;},1000);}
+
+function endCall(){
+  clearInterval(timerInt);
+  if(localStream)localStream.getTracks().forEach(t=>t.stop());
+  document.getElementById('callOverlay').classList.remove('active');
+  loadCallLog();
+}
+
+function acceptCall(){document.getElementById('incomingCall').classList.remove('active');startCall('remote','Chamada','voice');}
+function declineCall(){document.getElementById('incomingCall').classList.remove('active');showToast('Chamada recusada');}
+
+function toggleMute(){isMuted=!isMuted;if(localStream)localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted);const btn=document.getElementById('muteBtn');const label=document.getElementById('muteLabel');btn.classList.toggle('on',isMuted);label.textContent=isMuted?'Ativado':'Mudo';}
+function toggleCamera(){isCameraOff=!isCameraOff;if(localStream)localStream.getVideoTracks().forEach(t=>t.enabled=!isCameraOff);document.getElementById('cameraBtn').classList.toggle('on',isCameraOff);}
+function toggleSpeaker(){showToast('Modo alto-falante alternado');}
+async function toggleScreenShare(){try{const s=await navigator.mediaDevices.getDisplayMedia({video:true});document.getElementById('mainVideo').srcObject=s;showToast('Compartilhando tela');}catch{showToast('Compartilhamento cancelado');}}
+
+function subscribeSignaling(){
+  sb.channel('signaling:'+currentUser?.id).on('broadcast',{event:'incoming_call'},({payload})=>{
+    document.getElementById('incName').textContent=payload.callerName||'Chamada';document.getElementById('incAv').textContent=initials(payload.callerName||'');document.getElementById('incType').textContent=payload.type==='video'?'Vídeo chamada recebida':'Chamada de voz recebida';document.getElementById('incomingCall').classList.add('active');
+  }).subscribe();
+}
+
+function openNewCallModal(){
+  renderCallContacts(contacts);
+  document.getElementById('newCallModal').classList.add('open');
+}
+function filterCallContacts(q){renderCallContacts(contacts.filter(c=>(c.full_name||'').toLowerCase().includes(q.toLowerCase())));}
+function renderCallContacts(list){
+  document.getElementById('callContactList').innerHTML=list.map(c=>`
+    <div class="pick-item">
+      <div class="av" style="background:${grad(c.id)};width:38px;height:38px;font-size:.75rem;">${initials(c.full_name||c.email||'')}</div>
+      <div style="flex:1;min-width:0;"><div class="pick-name">${esc(c.full_name||'Sem nome')}</div><div class="pick-status">${c.status||'offline'}</div></div>
+      <div class="pick-actions">
+        <button class="pick-call-btn voice" onclick="startCall('${c.id}','${esc(c.full_name||'')}','voice')" title="Ligar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></button>
+        <button class="pick-call-btn video" onclick="startCall('${c.id}','${esc(c.full_name||'')}','video')" title="Vídeo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button>
+      </div>
+    </div>`).join('')||'<div style="color:var(--t3);font-size:.82rem;padding:12px;text-align:center;">Nenhum contato</div>';
+}
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toaster').appendChild(t);setTimeout(()=>t.remove(),3000);}
+init();
+</script>
+</body>
+</html>
