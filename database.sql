@@ -1,10 +1,5 @@
--- ════════════════════════════════════════════════════════════
--- TALKIO – Supabase Database Schema
--- Execute este SQL no Supabase SQL Editor
--- ════════════════════════════════════════════════════════════
 
--- ── ENABLE EXTENSIONS ──
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-list";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- ════════════════════════════════════════════════════════════
